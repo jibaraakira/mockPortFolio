@@ -1,0 +1,56 @@
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave {
+    opacity: 1;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 200ms;
+}
+
+.list-item {
+    display: block;
+}
+
+.list-enter-active {
+    transition: all 200ms 100ms;
+}
+
+.list-leave-active {
+    transition: all 200ms;
+}
+
+.list-enter,
+.list-leave-to {
+    transform: translateY(10px);
+
+    opacity: 0;
+}
+
+.projectCard-enter-active {
+    transition: all 200ms 100ms;
+}
+
+.projectCard-leave-active {
+    transition: all 200ms;
+}
+
+.projectPhaseList-enter-active {
+    transition: all 100ms;
+}
+
+.projectPhaseList-leave-active {
+    transition: all 100ms;
+}
+
+.projectPhaseList-enter,
+.projectPhaseList-leave-to {
+    transform: translateX(-10px);
+
+    opacity: 0;
+}

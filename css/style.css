@@ -1,0 +1,51 @@
+.card {
+    cursor: pointer;
+
+    box-shadow: 2px 2px 4px gray;
+}
+
+.card-body {
+    padding: 8px 12px;
+}
+
+.card-title {
+    margin-bottom: 5px;
+}
+
+.projectLoger__projectCard:active,
+.projectLoger__headCard:active {
+    transition: 0.2s;
+    transform: translate3d(0, 4px, 0);
+}
+
+.projectLoger__phaseList:active {
+    transition: none;
+    transform: none;
+}
+
+.projectLoger__message,
+.projectLoger__projectTitle {
+    font-size: 18px;
+}
+
+.projectLoger__formTitile {
+    cursor: auto;
+}
+
+.projectLoger__messageInput {
+    width: 65%;
+}
+
+.projectLoger__state {
+    overflow-y: scroll;
+
+    height: 100px;
+}
+
+.list-group-item {
+    padding: 5px;
+}
+
+.projectLoger__insertCard {
+    height: 60px;
+}
