@@ -8,7 +8,7 @@ const divisions = {
         "結合テスト",
         "総合テスト"
     ],
-    second: [
+    documents: [
         ["要求分析書(要件定義書)"],
         ["業務フロー", "システム構成図", "ER図", "テーブル定義書", "機能一覧表", "設計書記述様式", "基本設計書(外部設計書)"],
         ["画面遷移図", "詳細設計書(内部設計書)", "プロジェクト共通ルール"],
@@ -68,14 +68,19 @@ const listOperator = {
 }
 
 
-const getCurrentDate = () => {
-    var date = new Date();
-    return date.getFullYear() +
-        '-' + ('0' + (date.getMonth() + 1)).slice(-2) +
-        '-' + ('0' + date.getDate()).slice(-2) +
-        ' ' + ('0' + date.getHours()).slice(-2) +
-        ':' + ('0' + date.getMinutes()).slice(-2) +
-        ':' + ('0' + date.getSeconds()).slice(-2)
+function getCurrentDate() {
+    const nowDate = new Date();
+    const getValue = (value) => ('0' + value).slice(-2)
+
+    const date = {
+        year: nowDate.getFullYear(),
+        month: getValue(nowDate.getMonth() + 1),
+        date: getValue(nowDate.getDate()),
+        hour: getValue(nowDate.getHours()),
+        minutes: getValue(nowDate.getMinutes()),
+        seconds: getValue(nowDate.getSeconds())
+    };
+    return `${date.year}${date.month}${date.date}_${date.hour}${date.minutes}${date.seconds}`;
 }
 
 const store = new Vuex.Store({
@@ -108,36 +113,39 @@ const store = new Vuex.Store({
 });
 
 
-
-
-
 class VueComponentGetter {
 
-    static getDocumentList() {
+    static getDocumentList(documents, store) {
         return {
-            props: ['phaseIndex'],
-            data: [{ seen: true }],
-            template: `<div class="card-body" v-if="seen">
-                            <ul class="list-group list-group-flush ml-5">
-                                <li class="list-group-item list-group-item-action">書類１</li>
-                                <li class="list-group-item list-group-item-action">書類１</li>
+            props: ['documentIndex'],
+            store,
+            data: {
+                seen: true
+            },
+            //template: `<div>template:</div>`,
+            template: `<div class="card-body">
+                            <ul class="list-group list-group-flush ml-3" v-for="doc in getDocuments">
+                                <li class="list-group-item list-group-item-action" :click="clickDocument(doc.id)">{{ doc.title }}</li>
                             </ul>
                         </div>`,
             methods: {
-                clickPhase(index) {
-                    this.data = !this.data;
-                    console.log(`${this.parentIndex}-${index}`)
-                },
+                clickDocument(index) {
+                    console.log(index)
+                }
+            },
+            computed: {
+                getDocuments() {
+                    return documents[this.documentIndex].map((v, i) => { return { id: i, title: v }; })
+                }
             }
-
         }
     }
 
     static getProjectPhaseList(list, store) {
         const lis = list.map(
             (v, i) => `<li class="list-group-item list-group-item-action" v-on:click.stop="clickPhase(${i})">
-                        <div>${i+1}:${v}</div>
-                        <slot name="document-list" v-bind:phase-index></slot >
+                            <div>${i+1}:${v}</div>
+                            <document-list v-bind:document-index="${i}"></document-list>
                         </li>
                         `).join('\n')
         return {
@@ -159,6 +167,9 @@ class VueComponentGetter {
                     this.data = !this.data;
                     console.log(`${this.parentIndex}-${index}`)
                 },
+            },
+            components: {
+                'document-list': this.getDocumentList(divisions.documents, store),
             }
         }
     }
@@ -170,7 +181,7 @@ new Vue({
     data: {
         projectName: '',
         noSearchFlag: false,
-        children: []
+        children: [],
     },
     methods: {
         showAddProjectForm() {
@@ -215,7 +226,6 @@ new Vue({
 
     },
     components: {
-        'project-phase': VueComponentGetter.getProjectPhaseList(divisions.phase, store),
-        'document-list': VueComponentGetter.getDocumentList(),
+        'project-phase': VueComponentGetter.getProjectPhaseList(divisions.phase, store)
     }
 })

@@ -18,10 +18,11 @@
     transform: translate3d(0, 4px, 0);
 }
 
-.projectLoger__phaseList:active {
+
+/*.projectLoger__phaseList:active {
     transition: none;
     transform: none;
-}
+}*/
 
 .projectLoger__message,
 .projectLoger__projectTitle {

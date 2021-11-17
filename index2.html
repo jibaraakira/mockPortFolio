@@ -45,9 +45,6 @@
                             </div>
                             <transition name="projectPhaseList">
                                 <project-phase v-if="project.seen" v-bind:parent-index="project.id">
-                                    <template v-slot:document-list>
-                                        <document-list />
-                                    </template>
                                 </project-phase>
                             </transition>
                         </div>
@@ -55,32 +52,7 @@
                 </div>
 
             </transition-group>
-            <!-- <div class="projectLoger__projectCard card mt-2 ">
-                    <div class="card-body ">
-                        <div class="projectLoger__logInfo d-flex my-1 ">
-                            <div class="projectLoger__logTime mr-4 ">2021-10-17 10:19:18</div>
-                            <div>何某何蔵</div>
-                        </div>
-                        <div class="projectLoger__projectTitle card-title ">OOプロジェクト</div>
-                    </div>
-                    <div class="projectLoger__phaseList card m-2 ">
-                        <div class="card-body ">
-                            <div class="projectLoger__state my-1 ">
-                                <ul class="list-group list-group-flush ">
-                                    <li class="list-group-item ">
-                                        <div>要求分析(要件定義)</div>
-                                    </li>
-                                    <li class="list-group-item ">基本設計(外部設計)</li>
-                                    <li class="list-group-item ">詳細設計(内部設計)</li>
-                                    <li class="list-group-item ">プログラミング</li>
-                                    <li class="list-group-item ">単体テスト</li>
-                                    <li class="list-group-item ">結合テスト</li>
-                                    <li class="list-group-item ">総合テスト</li>
-                                </ul>
-                            </div>
-                        </div>
-                </div> 
-            </div>-->
+
         </section>
         <section class="col-8 ">
             <div class="projectLoger__formTitile card p-2 ">
