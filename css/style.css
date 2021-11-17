@@ -12,17 +12,15 @@
     margin-bottom: 5px;
 }
 
-.projectLoger__projectCard:active,
-.projectLoger__headCard:active {
+.active:active {
     transition: 0.2s;
     transform: translate3d(0, 4px, 0);
 }
 
-
-/*.projectLoger__phaseList:active {
+.show：active {
     transition: none;
     transform: none;
-}*/
+}
 
 .projectLoger__message,
 .projectLoger__projectTitle {

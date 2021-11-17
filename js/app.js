@@ -86,7 +86,10 @@ function getCurrentDate() {
 const store = new Vuex.Store({
     state: {
         addProjectMode: false,
-        projectList: data.main
+        projectList: data.main,
+        projectIndex: 0,
+        phaseIndex: 0,
+        documentIndex: 0,
     },
     mutations: {
         editProject(state, arr) {
@@ -104,10 +107,18 @@ const store = new Vuex.Store({
                     listOperator.delete(list, arr[1])
                     break;
             }
-
         },
         switch (state) {
             state.addProjectMode = !state.addProjectMode;
+        },
+        setProjectIndex(state, number) {
+            state.projectIndex = number;
+        },
+        setPhaseIndex(state, number) {
+            state.phaseIndex = number;
+        },
+        setDocumentIndex(state, number) {
+            state.documentIndex = number;
         }
     }
 });
@@ -122,15 +133,14 @@ class VueComponentGetter {
             data: {
                 seen: true
             },
-            //template: `<div>template:</div>`,
             template: `<div class="card-body">
                             <ul class="list-group list-group-flush ml-3" v-for="doc in getDocuments">
-                                <li class="list-group-item list-group-item-action" :click="clickDocument(doc.id)">{{ doc.title }}</li>
+                                <li class="list-group-item list-group-item-action" v-on:click.stop="clickDocument(doc.id)">{{ doc.title }}</li>
                             </ul>
                         </div>`,
             methods: {
                 clickDocument(index) {
-                    console.log(index)
+                    this.$store.commit('setDocumentIndex', index)
                 }
             },
             computed: {
@@ -149,7 +159,7 @@ class VueComponentGetter {
                         </li>
                         `).join('\n')
         return {
-            props: ['parentIndex'],
+            props: ['projectIndex'],
             data: { seen: false },
             store,
             template: `<div class="projectLoger__phaseList card m-2">
@@ -163,9 +173,11 @@ class VueComponentGetter {
                         </div>
                         `,
             methods: {
-                clickPhase(index) {
+                clickPhase(phaseIndex) {
                     this.data = !this.data;
-                    console.log(`${this.parentIndex}-${index}`)
+
+                    this.$store.commit('setProjectIndex', this.projectIndex)
+                    this.$store.commit('setPhaseIndex', phaseIndex)
                 },
             },
             components: {
@@ -182,6 +194,10 @@ new Vue({
         projectName: '',
         noSearchFlag: false,
         children: [],
+        check: {
+            a: false,
+            b: true
+        }
     },
     methods: {
         showAddProjectForm() {

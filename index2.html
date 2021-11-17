@@ -35,16 +35,16 @@
             <transition-group name="list">
                 <div class="projectLoger__projects mt-2" v-for="project in getProjectList" v-bind:key="project.id">
                     <transition class="projectCard">
-                        <div class="projectLoger__projectCard card mt-2" v-on:click.stop="viewPhase(project.id)">
+                        <div class="projectLoger__projectCard card mt-2" v-on:click.stop="viewPhase(project.id)" v-bind:class="{ show: project.seen, active: !project.seen }">
                             <div class="card-body">
                                 <div class="projectLoger__logInfo d-flex">
-                                    <div class="projectLoger__logTime mr-4">{{project.updateTime}}</div>
+                                    <div class="projectLoger__logTime mr-4 ">{{project.updateTime}}</div>
                                     <div>{{project.creator}}</div>
                                 </div>
-                                <div class="projectLoger__projectTitle card-title">{{project.title}}</div>
+                                <div class="projectLoger__projectTitle card-title ">{{project.title}}</div>
                             </div>
                             <transition name="projectPhaseList">
-                                <project-phase v-if="project.seen" v-bind:parent-index="project.id">
+                                <project-phase v-if="project.seen" v-bind:project-index="project.id ">
                                 </project-phase>
                             </transition>
                         </div>
