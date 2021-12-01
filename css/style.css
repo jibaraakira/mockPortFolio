@@ -48,3 +48,7 @@
 .projectLoger__insertCard {
     height: 60px;
 }
+
+.projectLoger__projectNameInput {
+    width: 70%;
+}

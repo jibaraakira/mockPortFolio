@@ -1,32 +1,3 @@
-const divisions = {
-    phase: [
-        "要求分析(要件定義)",
-        "基本設計(外部設計)",
-        "詳細設計(内部設計)",
-        "プログラミング",
-        "単体テスト",
-        "結合テスト",
-        "総合テスト"
-    ],
-    documents: [
-        ["要求分析書(要件定義書)"],
-        ["業務フロー", "システム構成図", "ER図", "テーブル定義書", "機能一覧表", "設計書記述様式", "基本設計書(外部設計書)"],
-        ["画面遷移図", "詳細設計書(内部設計書)", "プロジェクト共通ルール"],
-        [],
-        ["単体テスト仕様書/報告書"],
-        ["結合テスト仕様書/報告書"],
-        ["総合テスト仕様書/報告書"],
-    ]
-}
-
-const data = {
-    main: [
-        { id: 0, title: "OOプロジェクト", updateTime: "2021-10-17 10:19:18", creator: "東風谷早苗", seen: false },
-        { id: 1, title: "XXプロジェクト", updateTime: "2021-10-17 10:19:18", creator: "白井黒子", seen: false },
-        { id: 2, title: "YYプロジェクト", updateTime: "2021-10-17 10:19:18", creator: "リムル・テンペスト", seen: false },
-    ],
-}
-
 const listOperator = {
     keys: ['id', 'title', 'updateTime', 'creator'],
     add(list, item) {
@@ -87,9 +58,9 @@ const store = new Vuex.Store({
     state: {
         addProjectMode: false,
         projectList: data.main,
-        projectIndex: 0,
-        phaseIndex: 0,
-        documentIndex: 0,
+        phaseIndex: -1,
+        documentIndex: -1,
+        id: null,
     },
     mutations: {
         editProject(state, arr) {
@@ -98,11 +69,9 @@ const store = new Vuex.Store({
                 case "update":
                     listOperator.update(list, arr[1], arr[2])
                     break;
-
                 case "add":
                     listOperator.add(list, arr[1])
                     break;
-
                 case "delete":
                     listOperator.delete(list, arr[1])
                     break;
@@ -111,20 +80,75 @@ const store = new Vuex.Store({
         switch (state) {
             state.addProjectMode = !state.addProjectMode;
         },
-        setProjectIndex(state, number) {
-            state.projectIndex = number;
-        },
         setPhaseIndex(state, number) {
             state.phaseIndex = number;
+            state.documentIndex = -1;
         },
         setDocumentIndex(state, number) {
             state.documentIndex = number;
+
+        },
+        changeId(state, id) {
+            state.id = id;
+            state.phaseIndex = -1;
+            state.documentIndex = -1;
         }
     }
 });
 
 
 class VueComponentGetter {
+
+    static getRecordTable(projectRecords, store) {
+        return {
+            store,
+            template: `
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>変更時間</th>
+                                    <th>メッセージ</th>
+                                    <th>ユーザー</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="record in getRecords()">
+                                    <td>{{record.time}}</td>
+                                    <td>{{record.message}}</td>
+                                    <td>{{record.user}}</td>
+                                </tr>
+                            </tbody>
+                        </table>`,
+            methods: {
+                getRecords() {
+                    const id = this.$store.state.id;
+                    const phaseIndex = this.$store.state.phaseIndex
+                    const documentIndex = this.$store.state.documentIndex
+                    console.log(this.$store.state);
+
+                    if (id === null && phaseIndex === -1 && documentIndex === -1) {
+                        return
+                    }
+
+                    if (id !== null && phaseIndex === -1 && documentIndex === -1) {
+                        return projectRecords.filter(record => record.id === id)[0]
+                            .records
+                    }
+
+                    if (id !== null && phaseIndex !== -1 && documentIndex === -1) {
+                        return projectRecords.filter(record => record.id === id)[0]
+                            .phases[phaseIndex].records
+                    }
+
+                    if (id !== null && phaseIndex !== -1 && documentIndex !== -1) {
+                        return projectRecords.filter(record => record.id === id)[0]
+                            .phases[phaseIndex].documents[documentIndex].records
+                    }
+                }
+            }
+        }
+
+    }
 
     static getDocumentList(documents, store) {
         return {
@@ -145,7 +169,12 @@ class VueComponentGetter {
             },
             computed: {
                 getDocuments() {
-                    return documents[this.documentIndex].map((v, i) => { return { id: i, title: v }; })
+                    return documents[this.documentIndex].map((v, i) => {
+                        return {
+                            id: i,
+                            title: v
+                        };
+                    })
                 }
             }
         }
@@ -160,7 +189,9 @@ class VueComponentGetter {
                         `).join('\n')
         return {
             props: ['projectIndex'],
-            data: { seen: false },
+            data: {
+                seen: false
+            },
             store,
             template: `<div class="projectLoger__phaseList card m-2">
                             <div class="card-body">
@@ -175,8 +206,6 @@ class VueComponentGetter {
             methods: {
                 clickPhase(phaseIndex) {
                     this.data = !this.data;
-
-                    this.$store.commit('setProjectIndex', this.projectIndex)
                     this.$store.commit('setPhaseIndex', phaseIndex)
                 },
             },
@@ -220,6 +249,7 @@ new Vue({
         viewPhase(id) {
             const flag = this.$store.state.projectList[id]['seen'];
             this.$store.state.projectList[id]['seen'] = !flag;
+            this.$store.commit('changeId', id);
         }
     },
     computed: {
@@ -242,6 +272,7 @@ new Vue({
 
     },
     components: {
-        'project-phase': VueComponentGetter.getProjectPhaseList(divisions.phase, store)
+        'project-phase': VueComponentGetter.getProjectPhaseList(divisions.phase, store),
+        'record-table': VueComponentGetter.getRecordTable(projectRecodes, store)
     }
 })
