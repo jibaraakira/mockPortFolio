@@ -52,3 +52,38 @@
 .projectLoger__projectNameInput {
     width: 70%;
 }
+
+.projectLoger__state {
+    height: 250px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgb(197, 197, 197);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(34, 34, 34);
+}
+
+.projectLoger__projects {
+    overflow: scroll;
+
+    height: 400px;
+
+    border-radius: 1%;
+    box-shadow: 0px 0px 8px 3px #CCCCCC inset;
+
+    -ms-overflow-style: none;
+
+/* IE, Edge 対応 */
+    scrollbar-width: none;
+}
+
+.projectLoger__projects::-webkit-scrollbar {
+    /* Chrome, Safari 対応 */
+    display: none;
+}
