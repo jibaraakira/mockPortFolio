@@ -58,11 +58,16 @@ const store = new Vuex.Store({
     state: {
         addProjectMode: false,
         projectList: data.main,
-        phaseIndex: -1,
-        documentIndex: -1,
-        id: null,
+        phaseIndex: 0,
+        documentIndex: 0,
+        projectId: 0,
+        searchMode: ''
     },
     mutations: {
+        changeProjectId(state, id) {
+            state.projectId = id;
+            state.searchMode = 'project'
+        },
         editProject(state, arr) {
             const list = state.projectList;
             switch (arr[0]) {
@@ -82,17 +87,13 @@ const store = new Vuex.Store({
         },
         setPhaseIndex(state, number) {
             state.phaseIndex = number;
-            state.documentIndex = -1;
+            state.searchMode = 'phase'
         },
         setDocumentIndex(state, number) {
             state.documentIndex = number;
-
-        },
-        changeId(state, id) {
-            state.id = id;
-            state.phaseIndex = -1;
-            state.documentIndex = -1;
+            state.searchMode = 'document'
         }
+
     }
 });
 
@@ -121,29 +122,27 @@ class VueComponentGetter {
                         </table>`,
             methods: {
                 getRecords() {
-                    const id = this.$store.state.id;
+                    const id = this.$store.state.projectId;
                     const phaseIndex = this.$store.state.phaseIndex
                     const documentIndex = this.$store.state.documentIndex
-                    console.log(this.$store.state);
+                    const searchMode = this.$store.state.searchMode;
 
-                    if (id === null && phaseIndex === -1 && documentIndex === -1) {
-                        return
+                    switch (searchMode) {
+                        case '':
+                            return;
+                        case 'project':
+                            return projectRecords.filter(record => record.id === id)[0]
+                                .records;
+                        case 'phase':
+                            return projectRecords.filter(record => record.id === id)[0]
+                                .phases[phaseIndex].records;
+                        case 'document':
+                            return projectRecords.filter(record => record.id === id)[0]
+                                .phases[phaseIndex].documents[documentIndex].records;
+                        default:
+                            break;
                     }
 
-                    if (id !== null && phaseIndex === -1 && documentIndex === -1) {
-                        return projectRecords.filter(record => record.id === id)[0]
-                            .records
-                    }
-
-                    if (id !== null && phaseIndex !== -1 && documentIndex === -1) {
-                        return projectRecords.filter(record => record.id === id)[0]
-                            .phases[phaseIndex].records
-                    }
-
-                    if (id !== null && phaseIndex !== -1 && documentIndex !== -1) {
-                        return projectRecords.filter(record => record.id === id)[0]
-                            .phases[phaseIndex].documents[documentIndex].records
-                    }
                 }
             }
         }
@@ -249,7 +248,7 @@ new Vue({
         viewPhase(id) {
             const flag = this.$store.state.projectList[id]['seen'];
             this.$store.state.projectList[id]['seen'] = !flag;
-            this.$store.commit('changeId', id);
+            this.$store.commit('changeProjectId', id);
         }
     },
     computed: {
