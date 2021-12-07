@@ -64,7 +64,8 @@ const data = {
         },
     ],
 }
-const projectRecodes = [{
+
+const projectOneData = {
     id: 0,
     records: [{
             time: '2021-10-17 10:19:18',
@@ -201,4 +202,144 @@ const projectRecodes = [{
             documents: []
         }
     ]
-}]
+};
+
+const projectTwoData = {
+    id: 1,
+    records: [{
+            time: '2021-09-17 10:19:18',
+            message: '(1) 第2段階を達成',
+            user: '何某何蔵'
+        },
+        {
+            time: '2021-09-16 10:19:18',
+            message: '(1) 第2段階を達成',
+            user: '何某何蔵'
+        },
+        {
+            time: '2021-09-15 10:19:18',
+            message: '(1) 第2段階を達成',
+            user: '何某何蔵'
+        }
+    ],
+    phases: [{
+            records: [{
+                    time: '2021-09-17 10:19:18',
+                    message: '完成して、XX商社の担当者に送信した。',
+                    user: '何某何蔵'
+                },
+                {
+                    time: '2021-09-16 10:19:18',
+                    message: 'CSV連続取り込みの追加機能を追加した。XX担当からの指摘によるものである。',
+                    user: '何某何蔵'
+                },
+                {
+                    time: '2021-09-15 10:19:18',
+                    message: 'XXサーバからの自動取り込み機能を削除した。',
+                    user: '何某何蔵'
+                }
+            ],
+            documents: [{
+                records: [{
+                        time: '2021-09-17 10:19:18',
+                        message: '2ページ目の修正。システム構成図の簡易版を追加した。',
+                        user: '中川翔真'
+                    },
+                    {
+                        time: '2021-09-16 10:19:18',
+                        message: '第3章の文章の修正。「XXX」を「OOO」に修正した。',
+                        user: '中川翔真'
+                    }
+                ]
+            }]
+        },
+        {
+            records: [{
+                    time: '2021-09-17 10:19:18',
+                    message: '業務フロー.var2-1を完了した。',
+                    user: '何某何蔵'
+                },
+                {
+                    time: '2021-09-16 10:19:18',
+                    message: 'システム構成図の変更。verは3-1-1とした。',
+                    user: '何某何蔵'
+                },
+                {
+                    time: '2021-09-15 10:19:18',
+                    message: 'ER図の修正。ver1-1-1',
+                    user: '何某何蔵'
+                }
+            ],
+            documents: [
+                [{
+                        time: '2021-09-17 10:19:18',
+                        message: '(1) 第3段階を達成',
+                        user: '中川翔真'
+                    },
+                    {
+                        time: '2021-09-16 10:19:18',
+                        message: '(1) 第3段階を達成',
+                        user: '中川翔真'
+                    },
+                    {
+                        time: '2021-09-15 10:19:18',
+                        message: '(1) 第3段階を達成',
+                        user: '中川翔真'
+                    }
+                ],
+                [{
+                        time: '2021-09-17 10:19:18',
+                        message: '(1) 第3段階を達成',
+                        user: '中川翔真'
+                    },
+                    {
+                        time: '2021-09-16 10:19:18',
+                        message: '(1) 第3段階を達成',
+                        user: '何某何蔵'
+                    },
+                    {
+                        time: '2021-09-15 10:19:18',
+                        message: '(1) 第3段階を達成',
+                        user: '何某何蔵'
+                    }
+                ]
+            ]
+        },
+        {
+            records: [{
+                    time: '2021-09-17 10:19:18',
+                    message: '(1) 第3段階を達成',
+                    user: '何某何蔵'
+                },
+                {
+                    time: '2021-09-16 10:19:18',
+                    message: '(1) 第3段階を達成',
+                    user: '何某何蔵'
+                },
+                {
+                    time: '2021-09-15 10:19:18',
+                    message: '(1) 第3段階を達成',
+                    user: '何某何蔵'
+                }
+            ],
+            documents: []
+        },
+        {
+            records: [],
+            documents: []
+        },
+        {
+            records: [],
+            documents: []
+        },
+        {
+            records: [],
+            documents: []
+        },
+        {
+            records: [],
+            documents: []
+        }
+    ]
+};
+const projectRecodes = [projectOneData, projectTwoData]
